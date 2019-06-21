@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>灯光试题</title>
+<style>
+* {
+	margin: 0;
+	padding: 0;
+}
+html, body{
+	width: 100%;
+	height: 100%;
+}
+.content{
+	width: 100%;
+	height: 100%;
+	background: #fafafa;
+	overflow: hidden;
+}
+.content #title{
+	text-align: center;
+	line-height: 80px;
+	color: #999;
+}
+.content #question{
+	line-height: 40px;
+	color: #333;
+	padding: 0 30px;
+}
+.content #answer{
+	margin-top: 30px;
+	line-height: 40px;
+	color: #666;
+	padding: 0 30px;
+	opacity: 0;
+	transform:translate(0, 100px);
+	transition: all 1s;
+}
+.content #answer.show{
+	transform: none;
+	opacity: 1;
+}
+.footer{
+	width: 100%;
+	height: 45px;
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	display: flex;
+}
+.footer .btn{
+	flex: 1;
+	border: none;
+	background: #5c9dff;
+	color: #fff;
+	font-size: 16px;
+}
+.footer .btn:nth-of-type(2n){
+	border-left: 1px solid #ccc;
+}
+</style>
+</head>
+<body>
+<div class="content">
+	<h1 id="title"></h1>
+	<h2 id="question"></h2>
+	<h2 id="answer"></h2>
+	<div class="footer">
+		<button class="btn" onclick="next()">下一题</button>
+		<button class="btn" onclick="showAnswer()">查看答案</button>
+	</div>
+</div>
+
+<script>
+let title = document.getElementById('title')
+let btn = document.getElementById('btn')
+let question = document.getElementById('question')
+let answer = document.getElementById('answer')
+let questionList = [
+	{q: '进入照明不良道路', a: '开远光'},
+	{q: '夜间在路边临时停车', a: '开双闪灯示宽灯'},
+	{q: '夜间通过坡路', a: '远近光交'},
+	{q: '夜间超越前方车辆', a: '远近光交替'},
+	{q: '夜间同方向近距跟车行驶', a: '近光灯'},
+	{q: '夜间与机动车会车', a: '近光灯'},
+	{q: '夜间通过有信号灯路口', a: '近光灯'},
+	{q: '夜间通过没有交通信号灯的路口', a: '远近光交替'},
+	{q: '进入照明良好的道路', a: '近光灯'},
+	{q: '夜间通过拱桥', a: '远近光交替'},
+	{q: '夜间通过急弯', a: '远近光交替'},
+	{q: '夜间通过人行横道', a: '远近交替'},
+	{q: '夜间发生交通事故或故障，妨碍交通又难以移动', a: '双闪+示宽灯'},
+	{q: '请将前照灯变换成远光', a: '开远光灯'},
+]
+
+let curIndex = 0
+let newList = []
+
+window.onload = function() {
+	newList = questionList.slice(0)
+	newList.sort(randomsort)
+	curIndex = 0
+	showQuestion()
+}
+
+function showQuestion() {
+	answer.style.display = 'none'
+	setTimeout(() => {
+		answer.style.display = 'block'
+		answer.classList.remove('show')
+	}, 20)
+	if (curIndex < newList.length) {
+		title.innerText = `${curIndex + 1} / ${newList.length}`
+		question.innerText = `${newList[curIndex].q}`
+		answer.innerText = `${newList[curIndex].a}`
+	} else {
+		alert('你已经答完所有问题！现在重新开始')
+		curIndex = 0
+		showQuestion()
+	}
+}
+
+function next() {
+	curIndex++
+	showQuestion()
+}
+
+function showAnswer() {
+	answer.classList.add('show')
+}
+
+function randomsort(a, b) {
+    return Math.random()>.5 ? -1 : 1;
+    //用Math.random()函数生成0~1之间的随机数与0.5比较，返回-1或1
+}
+
+
+</script>
+</body>
+</html>
